@@ -1,0 +1,36 @@
+{
+    "name": "adamtorok96/-google-recaptcha",
+    "description": "A Laravel package for Google reCAPTCHA",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adam Torok",
+            "email": "adamtorok@sch.bme.hu"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "illuminate/support": "^5.5",
+        "illuminate/http": "^5.5",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "AdamTorok96\\GoogleReCaptcha\\": "src/"
+        }
+    },
+    "autoload-dev": { },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AdamTorok96\\GoogleReCaptcha\\GoogleReCaptchaServiceProvider"
+            ],
+            "aliases": {
+                "GoogleReCaptcha": "AdamTorok96\\GoogleReCaptcha\\Facades\\GoogleReCaptcha"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
