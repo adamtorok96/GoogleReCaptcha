@@ -3,6 +3,7 @@
 namespace AdamTorok96\GoogleReCaptcha;
 
 
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
@@ -83,13 +84,17 @@ class GoogleReCaptcha
 
         $client = new Client();
 
-        $response = $client->post(GoogleReCaptcha::API_URL, [
-            'form_params' => [
-                'secret'    => $this->config['secret_key'],
-                'response'  => $request->get(GoogleReCaptcha::FORM_PARAMETER),
-                'remoteip'  => $request->ip()
-            ]
-        ]);
+        try {
+            $response = $client->post(GoogleReCaptcha::API_URL, [
+                'form_params' => [
+                    'secret' => $this->config['secret_key'],
+                    'response' => $request->get(GoogleReCaptcha::FORM_PARAMETER),
+                    'remoteip' => $request->ip()
+                ]
+            ]);
+        } catch (Exception $exception) {
+            return false;
+        }
 
         if( $response->getStatusCode() !== 200 )
             return false;
