@@ -1,5 +1,5 @@
 {
-    "name": "adamtorok96/-google-recaptcha",
+    "name": "adamtorok96/google-recaptcha",
     "description": "A Laravel package for Google reCAPTCHA",
     "type": "library",
     "license": "MIT",
