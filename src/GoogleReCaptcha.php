@@ -124,10 +124,10 @@ class GoogleReCaptcha
         $builder = [];
 
         foreach ($this->attributes as $key => $value) {
-            $str = $key;
+            $str = 'data-' . $key;
 
             if( is_null($value) === false ) {
-                $str .= '"' . $value .'"';
+                $str .= '="' . $value .'"';
             }
 
             array_push($builder, $str);
