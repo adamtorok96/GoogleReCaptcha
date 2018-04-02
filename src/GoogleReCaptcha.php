@@ -54,7 +54,7 @@ class GoogleReCaptcha
      */
     public function getJsDom()
     {
-        return '<script src="' . $this->getJsUrl() . '"></script>';
+        return '<script type="text/javascript" src="' . $this->getJsUrl() . '"></script>';
     }
 
     /**
