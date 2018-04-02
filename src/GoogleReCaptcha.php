@@ -20,9 +20,14 @@ class GoogleReCaptcha
     const FORM_PARAMETER = 'g-recaptcha-response';
 
     /**
-     * @var array
+     * @var array $config
      */
     private $config;
+
+    /**
+     * @var array $attributes
+     */
+    private $attributes;
 
     /**
      * GoogleReCaptcha constructor.
@@ -30,7 +35,17 @@ class GoogleReCaptcha
      */
     public function __construct(array $config)
     {
-        $this->config = $config;
+        $this->config       = $config;
+        $this->attributes   = array();
+    }
+
+    /**
+     * @param string $name
+     * @param string|null $value
+     */
+    public function addAttribute(string $name, $value = null)
+    {
+        $this->attributes[$name] = $value;
     }
 
     /**
@@ -38,7 +53,7 @@ class GoogleReCaptcha
      */
     public function getCaptchaDom()
     {
-        return '<div class="g-recaptcha" data-sitekey="' .  $this->config['site_key'] . '"></div>';
+        return '<div class="g-recaptcha" data-sitekey="' .  $this->config['site_key'] . '" ' . $this->getAttributesStr() . '></div>';
     }
 
     /**
@@ -102,5 +117,22 @@ class GoogleReCaptcha
         $json = json_decode($response->getBody()->getContents());
 
         return $json !== null && isset($json->success) && $json->success;
+    }
+
+    private function getAttributesStr()
+    {
+        $builder = [];
+
+        foreach ($this->attributes as $key => $value) {
+            $str = $key;
+
+            if( is_null($value) === false ) {
+                $str .= '"' . $value .'"';
+            }
+
+            array_push($builder, $str);
+        }
+
+        return implode(' ', $builder);
     }
 }
