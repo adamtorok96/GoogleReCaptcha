@@ -88,23 +88,16 @@ class GoogleReCaptcha
         return 'https://www.google.com/recaptcha/api.js';
     }
 
-    /**
-     * @param Request $request
-     * @return bool
-     */
-    public function isValid(Request $request)
+    public function isValid(string $response, string $ip)
     {
-        if( $request->has(GoogleReCaptcha::FORM_PARAMETER) === false )
-            return false;
-
         $client = new Client();
 
         try {
             $response = $client->post(GoogleReCaptcha::API_URL, [
                 'form_params' => [
-                    'secret' => $this->config['secret_key'],
-                    'response' => $request->get(GoogleReCaptcha::FORM_PARAMETER),
-                    'remoteip' => $request->ip()
+                    'secret'    => $this->config['secret_key'],
+                    'response'  => $response,
+                    'remoteip'  => $ip
                 ]
             ]);
         } catch (Exception $exception) {
@@ -117,6 +110,18 @@ class GoogleReCaptcha
         $json = json_decode($response->getBody()->getContents());
 
         return $json !== null && isset($json->success) && $json->success;
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    public function isValidRequest(Request $request)
+    {
+        if( $request->has(GoogleReCaptcha::FORM_PARAMETER) === false )
+            return false;
+
+        return $this->isValid($request->get(GoogleReCaptcha::FORM_PARAMETER), $request->ip());
     }
 
     private function getAttributesStr()
