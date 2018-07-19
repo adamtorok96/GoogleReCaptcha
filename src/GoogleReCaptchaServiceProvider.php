@@ -2,6 +2,7 @@
 
 namespace AdamTorok96\GoogleReCaptcha;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class GoogleReCaptchaServiceProvider extends ServiceProvider
@@ -24,6 +25,24 @@ class GoogleReCaptchaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/Config/config.php' => config_path('captcha.php'),
         ]);
+
+        Blade::directive('recaptchaDom', function () {
+            /**
+             * @var $captcha GoogleReCaptcha
+             */
+            $captcha = $this->app->make(GoogleReCaptcha::class);
+
+            return '<?php echo \'' . $captcha->getCaptchaDom() . '\'; ?>';
+        });
+
+        Blade::directive('recaptchaJs', function () {
+            /**
+             * @var $captcha GoogleReCaptcha
+             */
+            $captcha = $this->app->make(GoogleReCaptcha::class);
+
+            return '<?php echo \'' . $captcha->getJsDom() . '\'; ?>';
+        });
     }
 
     public function provides()
