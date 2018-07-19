@@ -93,8 +93,14 @@ class GoogleReCaptcha
      * @param string $ip
      * @return bool
      */
-    public function isValid(string $response, string $ip) : bool
+    public function isValid(?string $response, ?string $ip) : bool
     {
+        if( is_null($response) || empty($response) )
+            return false;
+
+        if( is_null($ip) || empty($ip) )
+            return false;
+
         $client = new Client();
 
         try {
