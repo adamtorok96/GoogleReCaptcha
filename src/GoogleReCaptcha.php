@@ -51,7 +51,7 @@ class GoogleReCaptcha
     /**
      * @return string
      */
-    public function getCaptchaDom()
+    public function getCaptchaDom() : string
     {
         return '<div class="g-recaptcha" data-sitekey="' .  $this->config['site_key'] . '" ' . $this->getAttributesStr() . '></div>';
     }
@@ -67,7 +67,7 @@ class GoogleReCaptcha
     /**
      * @return string
      */
-    public function getJsDom()
+    public function getJsDom() : string
     {
         return '<script type="text/javascript" src="' . $this->getJsUrl() . '"></script>';
     }
@@ -83,12 +83,17 @@ class GoogleReCaptcha
     /**
      * @return string
      */
-    public function getJsUrl()
+    public function getJsUrl() : string
     {
         return 'https://www.google.com/recaptcha/api.js';
     }
 
-    public function isValid(string $response, string $ip)
+    /**
+     * @param string $response
+     * @param string $ip
+     * @return bool
+     */
+    public function isValid(string $response, string $ip) : bool
     {
         $client = new Client();
 
@@ -116,7 +121,7 @@ class GoogleReCaptcha
      * @param Request $request
      * @return bool
      */
-    public function isValidRequest(Request $request)
+    public function isValidRequest(Request $request) : bool
     {
         if( $request->has(GoogleReCaptcha::FORM_PARAMETER) === false )
             return false;
@@ -124,7 +129,7 @@ class GoogleReCaptcha
         return $this->isValid($request->get(GoogleReCaptcha::FORM_PARAMETER), $request->ip());
     }
 
-    private function getAttributesStr()
+    private function getAttributesStr() : string
     {
         $builder = [];
 
